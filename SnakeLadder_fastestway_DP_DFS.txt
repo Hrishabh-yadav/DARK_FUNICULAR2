@@ -1,0 +1,117 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+// Complete the quickestWayUp function below.
+int dp[101]={10000000};
+void DFS(vector <int> adj[],bool visited[],int v)
+{
+   
+    visited[v] = true;
+    vector<int>::reverse_iterator i;
+    //reverse_iterator
+    for (i = adj[v].rbegin(); i != adj[v].rend(); ++i)
+    {   if (!visited[*i]){
+           // cout<<*i<<" ";
+            if(adj[v].size()==1)
+                dp[*i]=dp[v];
+             else
+                 dp[*i]=dp[v]+1;
+            DFS(adj, visited,*i);
+             }
+          else if((adj[v].size()==1&&dp[*i]>dp[v])||adj[v].size()>1&&dp[*i]>dp[v]+1)
+          {   if(adj[v].size()==1&&v!=99)
+                dp[*i]=dp[v];
+             else
+                 dp[*i]=dp[v]+1;
+              DFS(adj,visited,*i);
+          }
+    }
+         
+}
+ 
+
+
+int main()
+{
+   // ofstream fout(getenv("OUTPUT_PATH"));
+
+    int t;
+    cin >> t;
+    
+    while(t>0)
+    {
+        t--;
+        for(int i=1;i<101;i++)
+        {
+            dp[i]=1000000;
+        }
+        dp[1]=0;
+        int n,m;
+        vector <int>v[101];
+        for(int i=1;i<=100;i++)
+        {
+            if(i<100)
+            {
+                v[i].push_back(i+1);
+            }
+              if(i<99)
+            {
+                v[i].push_back(i+2);
+            }
+              if(i<98)
+            {
+                v[i].push_back(i+3);
+            }
+              if(i<97)
+            {
+                v[i].push_back(i+4);
+            }
+              if(i<96)
+            {
+                v[i].push_back(i+5);
+            }
+              if(i<95)
+            {
+                v[i].push_back(i+6);
+            }
+        }
+        cin>>n;
+        for(int i=0;i<n;i++)
+        {
+            int l,r;
+            cin>>l>>r;
+            v[l].clear();
+            v[l].push_back(r);
+        }
+        cin>>m;
+           for(int i=0;i<m;i++)
+        {
+            int l,r;
+            cin>>l>>r;
+               v[l].clear();
+            v[l].push_back(r);
+        }
+        bool vi[101];
+        for(int i=1;i<101;i++)
+            vi[i]=false;
+        //cout<<t<<" ";
+    
+    DFS(v,vi,1);
+        if(dp[100]==1000000)
+        {   cout<<"-1"<<endl;
+         continue;}
+       cout<<dp[100]<<endl;
+      /* for(int i=1;i<101;i++)
+        { cout<<dp[i]<<" ";
+          if(i%10==0)
+              cout<<endl;}*/
+        
+        
+        
+    }
+
+  
+
+    return 0;
+}
