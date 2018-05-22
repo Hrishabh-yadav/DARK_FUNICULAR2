@@ -1,0 +1,28 @@
+            // CHESS PLACING http://codeforces.com/contest/985/problem/A
+
+#include<iostream>
+#include<cmath>
+#include<algorithm>
+using namespace std;
+
+int main()
+{
+    int n,i;
+    cin >> n;
+    int* a = new int[n/2]();
+    for(i=0;i<n/2;i++)
+        cin >> a[i];
+    sort(a,a+n/2);
+    int sb=0,sw=0;  // sb = mov. for black  // sw = mov. for white
+    for(i=0;i<n/2;i++)
+    {
+        sw = sw + abs(a[i]-(2*i+2));    // taking differences
+        sb = sb + abs(a[i]-(2*i+1));    //of relative position
+    }
+    /*if(sw<sb)
+        cout << sw << endl;
+    else
+        cout << sb << endl;*/
+    cout << min(sw,sb);
+    return 0;
+}
