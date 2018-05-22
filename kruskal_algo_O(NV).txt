@@ -1,0 +1,72 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int find(int parent[], int i)
+{
+    if (parent[i] == -1)
+        return i;
+    return find(parent, parent[i]);
+}
+ 
+void Union(int parent[], int x, int y)
+{
+    int xset = find(parent, x);
+    int yset = find(parent, y);
+    parent[xset] = yset;
+}
+ 
+ 
+int  krush( vector<pair<int,pair<int ,int > > > g1,int n,int m)
+{
+    vector <int> ans[n+1];
+    int k=0;
+    int sum=0;
+    int b[4500000];
+    int l=0;
+    int parent[4500000];
+     memset(parent, -1, sizeof(int) * 4500000);
+    
+    for(int i=0;i<g1.size();i++)
+    {     int l1=g1[i].second.first;
+          int l2=g1[i].second.second; 
+           int x=find(parent,l1);
+            int y=find(parent,l2);//cout<<x<<" "<<y<<" ";
+           //cout<<"nf";
+           if(x==y)
+               continue;
+           Union(parent,x,y);
+            sum+=g1[i].first;
+          // cout<<"nf";
+    }
+    return sum;
+        
+        
+    
+         
+        
+    
+    //return sum;
+}
+
+
+int main()
+{
+     vector<pair<int,pair<int ,int > > > g1;
+   
+    int n,m;
+    cin>>n>>m;
+    for(int i=0;i<m;i++)
+    {int wt,l1,l2;
+     cin>>l1>>l2>>wt;
+      g1.push_back({wt,{l1,l2}});
+    }
+    sort(g1.begin(),g1.end());
+   
+   int an= krush(g1,n,m);
+    
+    cout<<an;
+    
+    // Write your code here.
+
+    return 0;
+}
