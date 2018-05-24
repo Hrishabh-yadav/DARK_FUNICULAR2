@@ -1,0 +1,71 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+ 
+ 
+void diji(vector<pair<int,pair<int ,int > > > g1,int n,int src,int m)
+{
+    int dist[4000];
+    bool spt[4000];
+ for (int i = 1; i <= n; i++)
+        dist[i]   = INT_MAX;
+    dist[src] = 0;
+    for(int i=1;i<n;i++){int flag = 0;
+        for(int j=0;j<m;j++)
+        {   
+            int l1=g1[j].second.first;
+            int l2=g1[j].second.second;
+            int wt=g1[j].first;
+             if (dist[l1] != INT_MAX && dist[l1] + wt < dist[l2])
+             { dist[l2] = dist[l1] + wt;
+              flag=1;
+             }
+        }
+                         if(flag==0)
+                             break;
+                        }
+for(int i=1;i<=n;i++)
+{    if(i!=src&&dist[i]!=INT_MAX)
+    cout<<dist[i]<<" ";
+   if(dist[i]==INT_MAX)
+       cout<<"-1"<<" ";
+}
+  cout<<endl;  
+    
+    
+    
+    
+    
+}
+
+
+int main()
+{
+     //vector<int > g1[10000];
+    //unordered_map<long long int, int> map;
+    int t;
+    cin>>t;
+    while(t>0){t--;
+    vector<pair<int,pair<int ,int > > > g1;
+    int n,m;
+    cin>>n>>m;
+    for(int i=0;i<m;i+=1)
+    {int wt,l1,l2;
+     cin>>l1>>l2>>wt;
+       g1.push_back({wt,{l1,l2}});
+       g1.push_back({wt,{l2,l1}});
+       
+    }
+    //sort(g1.begin(),g1.end());
+   int l;
+    cin>>l;
+    
+   diji(g1,n,l,2*m);
+  
+    }
+    // Write your code here.
+
+    return 0;
+}
+

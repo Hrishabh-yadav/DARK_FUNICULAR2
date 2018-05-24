@@ -1,0 +1,93 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+#define ll long long
+#define inf 1000000007
+
+void dfs1(vector<int>g1[],int parent[],int index,bool visited[]){
+    visited[index]=true;
+	for (int i:g1[index]){
+		if (parent[i]==-1&&visited[i]==false){
+			parent[i]=index;
+			dfs1(g1,parent,i,visited);
+		}
+	}
+}
+
+void dfs2(vector< int>g1[],int points[],int parent[],int in,int point,bool vis[]){
+	 vis[in]=true;
+	points[in] += point;
+	point = points[in];
+	for (int i:g1[in]){
+		if (parent[i]==in&&vis[i]==false){
+			dfs2(g1,points,parent,i,point,vis);
+		}
+	}
+}
+
+int gcd(int a, int b)
+{
+    if (a == 0)
+        return b;
+    return gcd(b%a, a);
+}
+
+int main(){
+	std::ios::sync_with_stdio(false);cin.tie(0); cout.tie(0); cout<<setprecision(25);
+	int q;
+	cin>>q;
+	while(q>0){q--;
+		int n;
+		cin>>n;
+		vector<int > g1[n];
+		for (int i=1;i<n;i++){
+			int l1,l2;
+			cin>>l1>>l2;
+			g1[l1-1].push_back(l2-1);
+			g1[l2-1].push_back(l1-1);
+		}
+	    int parent[n];
+              int po[n];
+              for(int i=0;i<n;i++)
+              {   po[i]=0;
+                  parent[i]=-1;}
+		parent[0]=0;
+                bool visited[n];
+         for(int i=0;i<n;i++)
+             visited[i]=false;
+		dfs1(g1,parent,0,visited);
+		
+		int g,k;
+		cin>>g>>k;
+		
+		//int points[n];
+		for (int i=0;i<g;i++){
+			int u,v;
+			cin>>u>>v;
+			if (parent[v-1]==u-1){
+				po[0]++;
+				po[v-1]--;//cout<<i<<" ";
+			}
+			else{
+				po[u-1]++;
+			}
+		} 
+
+		
+		int ans=0;
+        // bool visited[n];
+         for(int i=0;i<n;i++)
+             visited[i]=false;
+		dfs2(g1,po,parent,0,0,visited);
+		for (int i=0;i<n;i++){//cout<<po[i]<<" ";
+			if (po[i]>=k){
+				ans++;
+			}
+		}
+	    //cout<<ans<<" ";
+		int d = gcd(ans,n);
+		cout<<ans/d<<"/"<<n/d<<endl;			
+	}
+	
+	return 0;
+}
