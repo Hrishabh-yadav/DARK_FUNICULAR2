@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+//vector<int> g1[100020];
+unordered_map <long long ,long long > m;
+unordered_map <long long,long long > val;
+unordered_map <int,bool> c;
+int ans=0;
+//bool b;
+
+void dfs(vector<int> g1[],int l1,int wt,int pos,bool &b)
+{    //cout<<pos<<" ";
+    vector <int> :: iterator i;
+    for(i=g1[pos].begin();i!=g1[pos].end();i++)
+    {  
+        if(val[*i]<=l1&&m[*i]>=wt)
+        {  
+            dfs(g1,l1,wt,*i,b);
+            if(b)
+             return;
+            //break;
+        }
+        
+    }
+  if(c[pos]!=true&&pos!=0)
+  {   c[pos]=true;
+      ans++;
+      b=true;
+   return;
+  } 
+    return;
+}
+void dfsinsert(vector<int> g1[],int l1,int wt,int pos,int ins)
+{   vector <int> :: iterator i;
+    
+    for(i=g1[pos].begin();i!=g1[pos].end();i++)
+    {   
+     if(l1>=val[*i]&&m[*i]>=wt)
+        { 
+         dfsinsert(g1,l1,wt,*i,ins);
+         return;
+        }
+
+    }
+    //cout<<l1<<" "<<pos<<endl;
+   g1[pos].push_back(ins);
+    
+ 
+}
+
+int main()
+{
+   int n,k;
+    cin>>n>>k;
+    m[0]=INT_MAX;
+    val[0]=0;
+    vector<int> g1[100020];
+    c[0]=false;
+     vector <int> :: iterator i;
+    vector<pair<long long int,long long int>> v1;
+    for(int j=0;j<n;j++)
+    {
+        int l1,l2;
+        cin>>l1>>l2;
+        v1.push_back({l1,l2});
+    }
+    sort(v1.begin(),v1.end());
+    for(int j=1;j<=n;j++)
+    {
+        long long int l1,wt;
+        l1=v1[j-1].first;
+        wt=v1[j-1].second;
+        c[j]=false;
+        m[j]=wt;
+        val[j]=l1;
+        
+        {    //cout<<"bbk";
+            dfsinsert(g1,l1,wt,0,j);
+            //cout<<j<<" ";
+        }
+    
+    }
+   // dfs(10,120,0);
+   /* for(int j=0;j<=n;j++)
+    {    cout<<j<<" :"<<" ";
+        for(i=g1[j].begin();i!=g1[j].end();++i)
+            cout<<*i<<" ";
+          cout<<endl;
+    }*/
+    v1.clear();
+     for(int j=0;j<k;j++)
+    {
+        int l1,l2;
+        cin>>l1>>l2;
+        v1.push_back({l1,l2});
+    }
+    sort(v1.begin(),v1.end());
+    for(int j=0;j<k;j++)
+    {    //cout<<j;
+        int lg,wg;
+        //cout<<lg<<" "<<wg;
+        lg=v1[j].first;
+        wg=v1[j].second;
+       bool b=false;
+        dfs(g1,lg,wg,0,b);//cout<<endl;
+    }
+    int ans2=0;
+    for(int j=0;j<=n;j++)
+        if(c[j])
+            ans2++;
+   cout<<ans;
+        
+    }
