@@ -1,0 +1,104 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+int power(unsigned long long int x, unsigned long long int y, int p)
+{
+   long long  int res = 1; 
+ 
+    x = x % p; 
+ 
+    while (y > 0)
+    {
+        if (y & 1)
+            res = (res*x) % p;
+        y = y >> 1;
+        x = (x*x) % p;
+    }
+    res%=p;
+    return res;
+}
+ 
+bool isPrime(int n)
+{
+    if (n <= 1)  return false;
+    if (n <= 3)  return true;
+ 
+    if (n%2 == 0 || n%3 == 0) return false;
+ 
+    for (int i=5; i*i<=n; i=i+6)
+        if (n%i == 0 || n%(i+2) == 0)
+            return false;
+ 
+    return true;
+}
+
+void findPrimefactors(unordered_set<int> &s, int n)
+{
+    while (n%2 == 0)
+    {
+        s.insert(2);
+        n = n/2;
+    }
+    for (int i = 3; i <= sqrt(n); i = i+2)
+    {
+        while (n%i == 0)
+        {
+            s.insert(i);
+            n = n/i;
+        }
+    }
+ 
+    if (n > 2)
+        s.insert(n);
+}
+int phi(int n)
+{
+    double result = n;
+ 
+    for (int p = 2; p * p <= n; ++p) {
+         
+        if (n % p == 0) {
+             
+            while (n % p == 0)
+                n /= p;
+            result *= (1.0 - (1.0 / (float)p));
+        }
+    }
+ 
+    if (n > 1)
+        result *= (1.0 - (1.0 / (float)n));
+ 
+    return (int)result;
+}
+int main()
+{
+    int p;
+    cin >> p;
+   // cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    if(isPrime(p))
+    {
+        int l=p-1;
+        unordered_set <int> s;
+        findPrimefactors(s,l);
+        for (int r=2; r<=l; r++)
+    {
+        bool flag = false;
+        for (auto it = s.begin(); it != s.end(); it++)
+        {
+ 
+            if (power(r, l/(*it), p) == 1)
+            {
+                flag = true;
+                break;
+            }
+         }
+ 
+         if (flag == false)
+         {cout<<r<<" "<<phi(p-1);break;}
+    }
+        
+        
+    }
+
+    return 0;
+}
