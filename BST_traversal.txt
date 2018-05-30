@@ -1,0 +1,110 @@
+                    // A Simple Binary Tree
+#include<iostream>
+using namespace std;
+
+#define TRUE 1
+#define FALSE 0
+
+struct node
+{
+    int data;
+    node *l;
+    node *r;
+};
+
+class tree
+{
+private:
+    node *p;
+public:
+    tree(); //constructor-> NULLing it
+    void srch(int,int&,node*&);
+    void inn(int);
+    void job();
+    void inor(node*);
+};
+
+tree::tree()
+{
+    p = NULL;
+}
+void tree::srch(int n,int &found,node *&parent)
+{
+    node *q;
+
+    parent = NULL;
+    found = FALSE;
+
+    if(p==NULL)
+    {
+        found = FALSE;
+        return;
+    }
+    q = p;
+    while(q!=NULL)
+    {
+        if(q->data==n)
+        {
+            found = TRUE;
+            return;
+        }
+        if(q->data>n)
+        {
+            parent = q;
+            q = q->l;
+        }
+        else
+        {
+            parent = q;
+            q = q->r;
+        }
+    }
+}
+void tree::inn(int n)
+{
+    node *t,*parent;
+    int found;
+
+    srch(n,found,parent);
+
+    if(found==TRUE)
+        cout << "Element already exists\n";
+
+    else
+    {
+        t = new node;
+        t->data = n;
+        t->l = t->r = NULL;
+        if(parent==NULL)
+            p = t;
+        else
+            parent->data>n?parent->l=t:parent->r=t;
+    }
+}
+void tree::job()
+{
+    inor(p);
+}
+void tree::inor(node *q)
+{
+    if(q!=NULL)
+    {
+        inor(q->l);
+        cout << "\t" << q->data << endl;
+        inor(q->r);
+    }
+}
+int main()
+{
+    int i,num;
+    tree tt;
+    for(i=0;i<10;i++)
+    {
+        cout << "Enter the data to be put into the BST\n";
+        cin >> num;
+        tt.inn(num);
+    }
+    cout << endl << endl << "And the Tree's inorder traversal is..\n";
+    tt.job();
+    return 0;
+}
