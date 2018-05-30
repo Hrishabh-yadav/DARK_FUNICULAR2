@@ -1,0 +1,97 @@
+                        // Stack using Linked List in C++
+#include<iostream>
+#include<vector>
+
+using namespace std;
+
+struct node
+{
+    int data;
+    node* link;
+};
+
+class ls	
+{
+private:
+    node *top;
+public:
+    ls();
+    void push(int);
+    void pop();
+    void show();
+    ~ls();
+};
+ls::ls()
+{
+    top = NULL;
+}
+void ls::push(int item)
+{
+    node *q;
+    q = new node;	// create node
+    if(top==NULL)
+    {
+        q->data = item;
+        q->link = NULL;
+        top = q;
+        return;
+    }
+    q->data = item;
+    q->link = top;
+    top = q;			// move the top to new node
+    return;
+}
+void ls::pop()
+{
+    node *q;
+    if(top==NULL)
+    {
+        cout << "Stack is Empty\n";
+        return;
+    }
+    q = top;
+    cout << top->data << " has been deleted\n";
+    top = top->link;
+    delete q;			// moving top to top->link is same as deletion
+}
+void ls::show()
+{
+    node* q;
+    q = top;
+    while(q!=NULL)
+    {
+        cout << q->data << " added \n";		// to display the items in the stack
+        q = q->link;
+    }
+}
+ls::~ls()					// destruction of the stack
+{
+    cout << "In the destructor.... stack is gone!!\n";
+    node *q;
+    q = top;
+    while(top!=NULL)
+    {
+        top = top->link;
+        delete q;
+        q = top;
+    }
+}
+int main()
+{
+    ls s;				// create the object here
+    cout << "The stack is ..\n";
+    s.push(6);
+    s.push(7);
+    s.push(2);
+    s.push(9);
+    s.push(5);
+    s.push(1);
+
+    s.show();
+
+    s.pop();
+    s.pop();
+    s.pop();
+
+    return 0;
+}
