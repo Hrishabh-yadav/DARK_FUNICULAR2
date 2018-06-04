@@ -1,0 +1,107 @@
+
+
+		// Hey, Please help me with this Code..
+		
+		// June Long Challenge.... Div 1.... Sheokand Strings
+			//https://www.codechef.com/JUNE18B/problems/SHKSTR
+		
+		/*
+		> I've input the strings in a vector
+		> Then for each query, I've input r and p
+		> And subtracted character by character for each string and p, and stored the sum of all
+		  the differences in x[r]
+		> cnt will be counting the number of leading zeros ( meaning, till where p and s[j] are same )
+		> mx will keep the max. number of leading zeros
+		> Then, if cnt > mx, mx gets cnt and 'in' will store that string's index
+		> If cnt==mx, then the x[j] of the string is compared with sum
+		> If x[j] <= sum, then sum gets x[j] and index will also change to j
+		> Finally, the string corresponding to 'in' is printed
+		>		.........
+		> I checked for 3-4 cases and it's working, but when I submit, it's wrong...
+		> Please Help.....!!!!
+		*/
+		
+#include<iostream>
+#include<vector>
+#include<string.h>
+#include<algorithm>
+#include<cmath>
+using namespace std;
+
+int main()
+{
+    int i,in,j,k,n,q,r,sum,cnt,mx,c;
+    char p[10],a[10];     // can't change
+    cin >> n;
+    //char *s[n];
+    vector<string>s;
+    int *x;  // x[n] can't change
+    for(i=0;i<n;i++)
+    {
+        cin >> a;
+        s.push_back(a);
+    }
+    for(i=0;i<10;i++)
+        p[i] = '\0';
+    //for(i=0;i<s.size();i++)
+      // cout << s[i] << endl;
+
+    cin >> q;
+    for(i=0;i<q;i++)
+    {
+        mx = 0;
+        // mx is to find the max. zeros
+        cin >> r >> p;
+
+        x = new int[r];
+        for(j=0;j<r;j++)
+        {
+            x[j] = 0;
+            for(k=0;k<max(strlen(p),s[j].size());k++)
+            {   // a holds character differences
+                //cout << a[j][k] << "\t";
+                x[j] = x[j] + s[j][k]-p[k];      // x finds the sum of each subtracted string
+            }
+            //cout << endl;
+        }
+        /*cout << endl;
+        for(j=0;j<r;j++)
+           cout << x[j] << endl;*/
+        sum = x[0];           // sum is to find lexicographically least
+        for(j=0;j<r;j++)
+        {
+            cnt = 0;            // cnt counts zeros
+            for(k=0;k<max(strlen(p),s[j].size());k++)   // to count zeros in that corresponding string
+            {
+                c = s[j][k] - p[k];
+                if(c==0)
+                    cnt++;
+                else
+                    break;
+            }
+            /*if(cnt>=mx&&x[j]<=sum)      // to get the string
+            {
+                mx = cnt;
+                in = j;
+                sum = x[j];
+            }*/
+            if(cnt>mx)
+            {
+                mx = cnt;
+                in = j;
+                sum = x[j];
+            }
+            else if(cnt==mx)
+            {
+                if(x[j]<=sum)
+                {
+                    sum = x[j];
+                    in = j;
+                }
+            }
+        }
+        //cout << cnt << "\t" << in << "\t" << sum << "\n";
+        cout << s[in] << endl;
+    }
+    return 0;
+}
